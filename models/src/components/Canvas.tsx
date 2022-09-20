@@ -18,7 +18,7 @@ const Canvas = () => {
 
   const getFiles = async () => {
     try {
-      const res = await fetch("http://localhost:5000/files");
+      const res = await fetch(import.meta.env.VITE_API_URL + "/files");
       const data = await res.json();
       setFiles(data.files);
     } catch (err) {
@@ -158,7 +158,7 @@ const Canvas = () => {
         files={files}
         changeFile={(file) => {
           console.log(file);
-          setURL("http://localhost:5000/" + file);
+          setURL(import.meta.env.VITE_API_URL + "/" + file);
         }}
       />
       <Upload getFiles={getFiles} />

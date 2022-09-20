@@ -8,8 +8,7 @@ const Upload = ({ getFiles }: { getFiles: () => void }) => {
       console.log(file);
       data.append("file", file);
       console.log(data);
-
-      const res = await fetch("http://localhost:5000/upload", {
+      const res = await fetch(import.meta.env.VITE_API_URL + "/upload", {
         method: "POST",
         body: data,
       });
