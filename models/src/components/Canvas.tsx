@@ -7,17 +7,59 @@ import Controls from "./Controls";
 import URL0 from "../assets/Black XBOX controller.glb?url";
 import URL1 from "../assets/P1.glb?url";
 import URL2 from "../assets/2CylinderEngine.glb?url";
+import { Object3D } from "three";
 
-export const Canvas = () => {
+const ChangeFile = ({
+  files,
+  changeFile,
+}: {
+  files: string[];
+  changeFile: (file: string) => void;
+}) => {
+  return (
+    <select
+      className="fixed top-4 right-4 p-1 m-1 my-2 z-10 text-white text-lg font-bold
+      bg-emerald-500/50 hover:bg-emerald-500 transition duration-300 border border-emerald-400 rounded-md"
+      id="device"
+      name="device"
+      defaultValue={"DEFAULT"}
+      onChange={(e) => changeFile(e.target.value)}
+    >
+      <option value="DEFAULT" disabled>
+        Choose File
+      </option>
+      {files.map((file) => (
+        <option key={file} value={file}>
+          {file}
+        </option>
+      ))}
+    </select>
+  );
+};
+
+const Canvas = ({ files }: { files: string[] }) => {
   const canvas = useRef<HTMLCanvasElement | null>(null);
   const [scene, setScene] = useState<THREE.Scene | null>(null);
   const [camera, setCamera] = useState<THREE.PerspectiveCamera | null>(null);
   const [renderer, setRenderer] = useState<THREE.WebGLRenderer | null>(null);
   const [loader, setLoader] = useState<GLTFLoader | null>(null);
-  const [URL, setURL] = useState(URL0);
+  const [URL, setURL] = useState("");
 
   const load = () => {
     if (loader && camera && renderer && scene) {
+      if (scene) {
+        const objects = scene?.children;
+        let objectToRemove: Object3D | null = null;
+        objects.forEach((o) => {
+          if (o.type === "Group") {
+            objectToRemove = o;
+          }
+        });
+        if (objectToRemove) {
+          scene.remove(objectToRemove);
+        }
+      }
+
       loader.load(
         URL,
         (gltf) => {
@@ -31,18 +73,14 @@ export const Canvas = () => {
   };
 
   const animate = () => {
-    if (camera && scene && renderer) {
-      console.log("animate");
-      load();
-      function loop() {
-        requestAnimationFrame(loop);
-        if (scene && camera && renderer) {
-          //   console.log("loop");
-          renderer.render(scene, camera);
-        }
+    console.log("animate");
+    function loop() {
+      requestAnimationFrame(loop);
+      if (scene && camera && renderer) {
+        renderer.render(scene, camera);
       }
-      loop();
     }
+    loop();
   };
 
   const resize = () => {
@@ -115,19 +153,32 @@ export const Canvas = () => {
   }, []);
 
   useEffect(() => {
-    animate();
-    window.addEventListener("resize", resize);
-    return () => {
-      window.removeEventListener("resize", resize);
-    };
+    if (camera && scene && renderer) {
+      animate();
+      window.addEventListener("resize", resize);
+      return () => {
+        window.removeEventListener("resize", resize);
+      };
+    }
   }, [scene, camera, renderer]);
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    load();
+  }, [URL]);
 
   return (
     <>
       {scene && <Controls scene={scene} />}
-      <canvas ref={canvas} className="fixed top-0 left-0 -z-50"></canvas>;
+      <canvas ref={canvas} className="fixed top-0 left-0 -z-50"></canvas>
+      <ChangeFile
+        files={files}
+        changeFile={(file) => {
+          console.log(file);
+          setURL("http://localhost:5000/" + file);
+        }}
+      />
     </>
   );
 };
+
+export default Canvas;
