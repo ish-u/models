@@ -3,47 +3,28 @@ import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Controls from "./Controls";
-
-import URL0 from "../assets/Black XBOX controller.glb?url";
-import URL1 from "../assets/P1.glb?url";
-import URL2 from "../assets/2CylinderEngine.glb?url";
+import ChangeFile from "./ChangeFile";
+import Upload from "./Upload";
 import { Object3D } from "three";
 
-const ChangeFile = ({
-  files,
-  changeFile,
-}: {
-  files: string[];
-  changeFile: (file: string) => void;
-}) => {
-  return (
-    <select
-      className="fixed top-4 right-4 p-1 m-1 my-2 z-10 text-white text-lg font-bold
-      bg-emerald-500/50 hover:bg-emerald-500 transition duration-300 border border-emerald-400 rounded-md"
-      id="device"
-      name="device"
-      defaultValue={"DEFAULT"}
-      onChange={(e) => changeFile(e.target.value)}
-    >
-      <option value="DEFAULT" disabled>
-        Choose File
-      </option>
-      {files.map((file) => (
-        <option key={file} value={file}>
-          {file}
-        </option>
-      ))}
-    </select>
-  );
-};
-
-const Canvas = ({ files }: { files: string[] }) => {
+const Canvas = () => {
   const canvas = useRef<HTMLCanvasElement | null>(null);
   const [scene, setScene] = useState<THREE.Scene | null>(null);
   const [camera, setCamera] = useState<THREE.PerspectiveCamera | null>(null);
   const [renderer, setRenderer] = useState<THREE.WebGLRenderer | null>(null);
   const [loader, setLoader] = useState<GLTFLoader | null>(null);
   const [URL, setURL] = useState("");
+  const [files, setFiles] = useState([]);
+
+  const getFiles = async () => {
+    try {
+      const res = await fetch("http://localhost:5000/files");
+      const data = await res.json();
+      setFiles(data.files);
+    } catch (err) {
+      console.error(err);
+    }
+  };
 
   const load = () => {
     if (loader && camera && renderer && scene) {
@@ -150,6 +131,9 @@ const Canvas = ({ files }: { files: string[] }) => {
 
   useEffect(() => {
     setup();
+    if (!files.length) {
+      getFiles();
+    }
   }, []);
 
   useEffect(() => {
@@ -177,6 +161,7 @@ const Canvas = ({ files }: { files: string[] }) => {
           setURL("http://localhost:5000/" + file);
         }}
       />
+      <Upload getFiles={getFiles} />
     </>
   );
 };
