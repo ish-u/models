@@ -6,8 +6,13 @@ import Controls from "./Controls";
 import ChangeFile from "./ChangeFile";
 import Upload from "./Upload";
 import { Object3D } from "three";
+import Logout from "./Logout";
 
-const Canvas = () => {
+const Canvas = ({
+  setIsAuthenticated,
+}: {
+  setIsAuthenticated: (value: boolean) => void;
+}) => {
   const canvas = useRef<HTMLCanvasElement | null>(null);
   const [scene, setScene] = useState<THREE.Scene | null>(null);
   const [camera, setCamera] = useState<THREE.PerspectiveCamera | null>(null);
@@ -18,7 +23,9 @@ const Canvas = () => {
 
   const getFiles = async () => {
     try {
-      const res = await fetch(import.meta.env.VITE_API_URL + "/files");
+      const res = await fetch(import.meta.env.VITE_API_URL + "/files", {
+        credentials: "include",
+      });
       const data = await res.json();
       setFiles(data.files);
     } catch (err) {
@@ -158,10 +165,11 @@ const Canvas = () => {
         files={files}
         changeFile={(file) => {
           console.log(file);
-          setURL(import.meta.env.VITE_API_URL + "/" + file);
+          setURL(import.meta.env.VITE_API_URL + "/public/" + file);
         }}
       />
       <Upload getFiles={getFiles} />
+      <Logout setIsAuthenticated={setIsAuthenticated} />
     </>
   );
 };

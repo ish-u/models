@@ -7,7 +7,7 @@ const ChangeFile = ({
 }) => {
   return (
     <select
-      className="fixed top-4 right-4 p-1 m-1 my-2 z-10 text-white text-lg font-bold
+      className="fixed bottom-4 left-4 p-1 m-1 my-2 z-10 text-white text-lg font-bold
         bg-emerald-500/50 hover:bg-emerald-500 transition duration-300 border border-emerald-400 rounded-md"
       id="device"
       name="device"

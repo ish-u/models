@@ -11,6 +11,7 @@ const Upload = ({ getFiles }: { getFiles: () => void }) => {
       const res = await fetch(import.meta.env.VITE_API_URL + "/upload", {
         method: "POST",
         body: data,
+        credentials: "include",
       });
       if (res.status === 201) {
         const resData = await res.json();
@@ -27,6 +28,7 @@ const Upload = ({ getFiles }: { getFiles: () => void }) => {
           bg-emerald-500/50 hover:bg-emerald-500 transition duration-300 border border-emerald-400 rounded-md"
         type="file"
         name="file"
+        accept=".glb,.glft"
         onChange={(event) => {
           const uploadFile: File | undefined = event.target.files
             ? event.target.files[0]
