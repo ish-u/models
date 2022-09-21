@@ -33,8 +33,9 @@ app.use(
     }),
     cookie: {
       maxAge: 1000 * 60 * 60 * 24,
-      sameSite: "none",
-      secure: true,
+      secure: process.env.DEV === "TRUE" ? false : true,
+      sameSite: process.env.DEV === "TRUE" ? "lax" : "none",
+      httpOnly: true,
     },
   })
 );
