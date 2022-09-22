@@ -17,11 +17,12 @@ const ChangeFile = ({
       <option value="DEFAULT" disabled>
         Choose File
       </option>
-      {files.map((file) => (
-        <option key={file} value={file}>
-          {file}
-        </option>
-      ))}
+      {files &&
+        files.map((file) => (
+          <option key={file} value={file}>
+            {file}
+          </option>
+        ))}
     </select>
   );
 };

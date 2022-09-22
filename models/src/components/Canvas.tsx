@@ -33,7 +33,7 @@ const Canvas = ({
     }
   };
 
-  const load = () => {
+  const load = async () => {
     if (loader && camera && renderer && scene) {
       if (scene) {
         const objects = scene?.children;
@@ -48,8 +48,13 @@ const Canvas = ({
         }
       }
 
+      const res = await fetch(import.meta.env.VITE_API_URL + "/file/" + URL, {
+        credentials: "include",
+      });
+      const url = (await res.json()).url;
+
       loader.load(
-        URL,
+        url,
         (gltf) => {
           gltf.scene.scale.set(10, 10, 10);
           scene.add(gltf.scene);
@@ -165,7 +170,7 @@ const Canvas = ({
         files={files}
         changeFile={(file) => {
           console.log(file);
-          setURL(import.meta.env.VITE_API_URL + "/public/" + file);
+          setURL(file);
         }}
       />
       <Upload getFiles={getFiles} />

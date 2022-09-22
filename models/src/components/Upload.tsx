@@ -14,8 +14,6 @@ const Upload = ({ getFiles }: { getFiles: () => void }) => {
         credentials: "include",
       });
       if (res.status === 201) {
-        const resData = await res.json();
-        console.log(resData);
         await getFiles();
       }
     }
