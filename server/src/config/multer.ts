@@ -1,22 +1,24 @@
 import multer from "multer";
+import multerS3 from "multer-s3";
+import { S3 } from "./aws";
+import { Request } from "express";
 
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, "public/");
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1e9);
-    cb(
-      null,
-      file.originalname.split(".")[0] +
-        "-" +
-        uniqueSuffix +
-        "." +
-        file.originalname.split(".")[1]
-    );
-  },
+const upload = multer({
+  storage: multerS3({
+    s3: S3,
+    bucket: "fabrik.models",
+    metadata: function (req, file, cb) {
+      cb(null, { fieldName: file.fieldname });
+    },
+    key: function (req: Request, file, cb) {
+      const username = (
+        req.user as {
+          username: string;
+        }
+      ).username;
+      cb(null, username + "/" + Date.now() + file.originalname);
+    },
+  }),
 });
-
-const upload = multer({ storage: storage });
 
 export default upload;
