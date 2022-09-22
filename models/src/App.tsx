@@ -31,11 +31,11 @@ function App() {
   } else {
     return (
       <>
-        <div className="h-screen w-screen flex flex-col items-center justify-center pb-32 bg-slate-900/50">
+        <div className="h-screen w-screen flex flex-col items-center justify-center pb-32 bg-slate-900/75">
           <div className="fixed  top-0 justify-center flex -z-10 w-screen h-screen bg-black flex-wrap ">
             <img className="object-cover object-center  w-screen" src={URL} />
           </div>
-          <div className="text-transparent text-8xl font-bold bg-clip-text bg-gradient-to-r from-slate-700 to-slate-900 animate-text">
+          <div className="text-transparent text-8xl font-bold bg-clip-text bg-gradient-to-r from-cyan-500 via-slate-400 to-cyan-900 animate-text">
             models
           </div>
 
