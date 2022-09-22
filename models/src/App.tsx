@@ -4,6 +4,8 @@ import Login from "./components/Login";
 import Register from "./components/Register";
 
 import URL from "../src/assets/background.webp";
+import Loader from "./components/Loader";
+import Snackbar from "./components/Snackbar";
 
 function App() {
   const [isAutenticated, setIsAuthenticated] = useState(false);
@@ -35,17 +37,18 @@ function App() {
           <div className="fixed  top-0 justify-center flex -z-10 w-screen h-screen bg-black flex-wrap ">
             <img className="object-cover object-center  w-screen" src={URL} />
           </div>
-          <div className="text-transparent text-8xl font-bold bg-clip-text bg-gradient-to-r from-cyan-500 via-slate-400 to-cyan-900 animate-text">
+          <div className="text-transparent text-8xl font-bold bg-clip-text bg-gradient-to-r from-emerald-500 via-slate-500 to-cyan-900 animate-text">
             models
           </div>
 
+          {loading && <Loader />}
           {!loading && (
-            <>
+            <div>
               {page === "login" && (
                 <Login setIsAuthenticated={setIsAuthenticated} />
               )}
               {page === "register" && <Register />}
-              <div className="flex flex-start text-white">
+              <div className="flex justify-center text-white">
                 <a
                   className="mx-4 p-1 hover:underline hover:cursor-pointer"
                   onClick={() => {
@@ -63,7 +66,7 @@ function App() {
                   Register
                 </a>
               </div>
-            </>
+            </div>
           )}
         </div>
       </>
