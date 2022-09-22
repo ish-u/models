@@ -18,6 +18,11 @@ const UserSchema = new mongoose.Schema({
     type: String,
     required: true,
   },
+  files: {
+    type: Map,
+    of: String,
+    default: {},
+  },
 });
 
 export default mongoose.model("User", UserSchema);
