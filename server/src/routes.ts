@@ -1,6 +1,8 @@
 import { Express, Request, Response } from "express";
 import upload from "./config/multer";
 import {
+  getBucketsHandler,
+  getFileHandler,
   getFilesHandler,
   uploadFileHandler,
 } from "./controllers/files.controller";
@@ -29,6 +31,8 @@ function routes(app: Express) {
   // FILE
   app.post("/upload", authenticate, upload.single("file"), uploadFileHandler);
   app.get("/files", authenticate, getFilesHandler);
+  app.get("/file/:fileName", authenticate, getFileHandler);
+  // app.get("/buckets", getBucketsHandler);
 }
 
 export default routes;

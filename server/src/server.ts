@@ -1,3 +1,7 @@
+// ENV Variables
+import dotenv from "dotenv";
+dotenv.config();
+
 import express from "express";
 import { Express } from "express";
 import cors from "cors";
@@ -5,11 +9,7 @@ import session from "express-session";
 import MongoStore from "connect-mongo";
 import passport from "passport";
 import "./config/session";
-
-// ENV Variables
-import dotenv from "dotenv";
-import { authenticate } from "./utils/authenticate";
-dotenv.config();
+import "./config/aws";
 
 // Express App
 const app: Express = express();
@@ -42,7 +42,6 @@ app.use(
 );
 app.use(passport.initialize());
 app.use(passport.session());
-// app.use("/public", [authenticate, express.static("public")]);
 app.use("/public", express.static("public"));
 
 export default app;
