@@ -5,6 +5,7 @@ module.exports = {
     extend: {
       animation: {
         text: "text 10s ease infinite",
+        pulse: "pulse 2s ease-in-out infinite",
       },
       keyframes: {
         text: {
@@ -15,6 +16,17 @@ module.exports = {
           "50%": {
             "background-size": "200% 200%",
             "background-position": "right center",
+          },
+        },
+        pulse: {
+          "0%": {
+            transform: "scale(0.5)",
+          },
+          "50%": {
+            transform: "scale(1)",
+          },
+          "100%": {
+            transform: "scale(0.5)",
           },
         },
       },
