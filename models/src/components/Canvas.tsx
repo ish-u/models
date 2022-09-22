@@ -1,13 +1,11 @@
-import { useCallback, useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
 import Controls from "./Controls";
-import ChangeFile from "./ChangeFile";
-import Upload from "./Upload";
 import { Object3D } from "three";
-import Logout from "./Logout";
 
+import File from "./File";
 const Canvas = ({
   setIsAuthenticated,
 }: {
@@ -164,17 +162,18 @@ const Canvas = ({
 
   return (
     <>
-      {scene && <Controls scene={scene} />}
-      <canvas ref={canvas} className="fixed top-0 left-0 -z-50"></canvas>
-      <ChangeFile
+      {scene && (
+        <Controls scene={scene} setIsAuthenticated={setIsAuthenticated} />
+      )}
+      <File
         files={files}
         changeFile={(file) => {
           console.log(file);
           setURL(file);
         }}
+        getFiles={getFiles}
       />
-      <Upload getFiles={getFiles} />
-      <Logout setIsAuthenticated={setIsAuthenticated} />
+      <canvas ref={canvas} className="fixed top-0 left-0 -z-50"></canvas>
     </>
   );
 };
