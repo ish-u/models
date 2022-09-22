@@ -32,7 +32,11 @@ passport.serializeUser(function (user, cb) {
 
 passport.deserializeUser(async function (id, cb) {
   try {
-    const doc = await UserModel.findById(id);
+    const doc = await UserModel.findById(id, {
+      password: 0,
+      email: 0,
+      name: 0,
+    });
     if (!doc) {
       return cb("ERROR");
     }
