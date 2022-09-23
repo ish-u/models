@@ -18,7 +18,9 @@ const app: Express = express();
 app.use(
   cors({
     origin: [
-      process.env.DEV ? "http://localhost:5173" : process.env.FRONTEND || "",
+      process.env.DEV === "TRUE"
+        ? "http://localhost:5173"
+        : process.env.FRONTEND || "",
     ],
     credentials: true,
   })
