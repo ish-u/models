@@ -6,10 +6,14 @@ const File = ({
   files,
   changeFile,
   getFiles,
+  showMenu,
+  setShowMenu,
 }: {
   files: string[];
   changeFile: (file: string) => void;
   getFiles: () => void;
+  showMenu: string;
+  setShowMenu: (value: "File" | "Control" | "None") => void;
 }) => {
   const [visible, setVisible] = useState<"visible" | "invisible">("invisible");
 
@@ -17,8 +21,10 @@ const File = ({
     console.log(visible);
     if (visible === "invisible") {
       setVisible("visible");
+      setShowMenu("File");
     } else {
       setVisible("invisible");
+      setShowMenu("None");
     }
   };
 
@@ -28,7 +34,9 @@ const File = ({
         className={`${
           visible !== "visible" ? "visible" : "invisible"
         } fixed top-0 right-0 bg-emerald-500/75 hover:bg-emerald-500 hover:cursor-pointer border-emerald-900 text-white
-         px-4 py-2 flex items-center border-l-4 border-b-4 rounded-bl-lg font-semibold`}
+         px-4 py-2 flex items-center border-l-4 border-b-4 rounded-bl-lg font-semibold  ${
+           showMenu === "Control" ? "invisible md:visible" : ""
+         }`}
         onClick={toggle}
       >
         <div className="flex items-center mr-1">
@@ -49,12 +57,13 @@ const File = ({
         </div>
         <div className="text-2xl">Files</div>
       </div>
+
       <div
         className={`${
           visible === "visible" ? "visible" : "invisible"
-        } fixed top-0 right-0 w-screen h-screen lg:w-2/6 bg-emerald-500/75`}
+        } fixed top-0 right-0 w-screen h-screen md:w-5/6 lg:w-[30%] bg-emerald-500/50`}
       >
-        <ChangeFile files={files} changeFile={changeFile} />
+        <ChangeFile files={files} changeFile={changeFile} toggle={toggle} />
         <div className="h-1/6 flex flex-col justify-center items-center">
           <Upload getFiles={getFiles} />
         </div>

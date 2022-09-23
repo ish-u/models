@@ -22,9 +22,14 @@ const ControlButton = ({
 const Controls = ({
   scene,
   setIsAuthenticated,
+  showMenu,
+  setShowMenu,
 }: {
   scene: THREE.Scene;
   setIsAuthenticated: (value: boolean) => void;
+  showMenu: string;
+
+  setShowMenu: (value: "File" | "Control" | "None") => void;
 }) => {
   const [visible, setVisible] = useState<"visible" | "invisible">("invisible");
   const [hover, setHover] = useState(true);
@@ -71,8 +76,10 @@ const Controls = ({
     console.log(visible);
     if (visible === "invisible") {
       setVisible("visible");
+      setShowMenu("Control");
     } else {
       setVisible("invisible");
+      setShowMenu("None");
     }
   };
 
@@ -81,18 +88,18 @@ const Controls = ({
       <div
         className={`fixed ${
           visible === "visible" ? "visible" : "invisible"
-        } w-screen md:w-3/6 lg:w-1/6 top-0 left-0 z-50 flex flex-col pt-14 pb-8 px-4
-        bg-emerald-600/25 h-screen border-r-4 border-emerald-900`}
+        } w-screen md:w-2/6 lg:w-1/6 top-0 left-0 z-50 flex flex-col justify-evenly px-4 pt-16
+        bg-emerald-600/25 h-screen border-r-4 border-b-4 border-emerald-900 `}
       >
         <div className="flex flex-col grow">
           <ControlButton title="Show Grid" toggle={toggleGrid} />
           <ControlButton title="Show Axes" toggle={toggleAxes} />
           <ControlButton title="Show Point Light" toggle={toggleLight} />
         </div>
-        <div className="flex flex-col">
+        <div className="flex flex-col h-1/6">
           <Logout setIsAuthenticated={setIsAuthenticated} />
         </div>
-        <div className="absolute -top-0 -right-0">
+        <div className="absolute top-0 left-0">
           <div
             className="hover:bg-emerald-500/60 p-1 font-bold text-white"
             onClick={toggle}
@@ -118,7 +125,7 @@ const Controls = ({
           visible !== "visible" ? "visible" : "invisible"
         } w-4 h-screen bg-emerald-600/50 border-r-4 border-emerald-900 ${
           hover ? "bg-emerald-600/75" : ""
-        }`}
+        } ${showMenu === "File" ? "invisible md:visible" : ""}`}
         onMouseEnter={() => {
           setHover(true);
         }}
@@ -132,7 +139,7 @@ const Controls = ({
           visible !== "visible" ? "visible" : "invisible"
         } top-0 left-0 w-4 h-10 bg-emerald-600/50 ${
           hover ? "bg-emerald-600/75" : ""
-        }`}
+        } ${showMenu === "File" ? "invisible md:visible" : ""}`}
         onMouseEnter={() => {
           setHover(true);
         }}
@@ -144,7 +151,9 @@ const Controls = ({
       <div
         className={`fixed ${
           visible !== "visible" ? "visible" : "invisible"
-        } -top-0 border-r-4 border-b-4 ml-4 border-emerald-900`}
+        } -top-0 border-r-4 border-b-4 ml-4 border-emerald-900 ${
+          showMenu === "File" ? "invisible md:visible" : ""
+        }`}
         onMouseEnter={() => {
           setHover(true);
         }}
@@ -156,7 +165,7 @@ const Controls = ({
         <div
           className={`flex text-white justify-center items-center pr-4 bg-emerald-600/50 h-10 font-bold text-xl ${
             hover ? "bg-emerald-600/75" : ""
-          }`}
+          } ${showMenu === "File" ? "invisible md:visible" : ""}`}
         >
           <svg
             xmlns="http://www.w3.org/2000/svg"

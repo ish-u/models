@@ -1,9 +1,11 @@
 const ChangeFile = ({
   files,
   changeFile,
+  toggle,
 }: {
   files: string[];
   changeFile: (file: string) => void;
+  toggle: () => void;
 }) => {
   return (
     <>
@@ -12,12 +14,16 @@ const ChangeFile = ({
         {files &&
           files.map((file) => {
             return (
-              <div className="w-1/2 flex justify-center">
+              <div
+                className="w-1/2 sm:w-1/3 md:w-1/4 lg:w-1/2 flex justify-center items-center h-fit"
+                key={file}
+              >
                 <div
-                  className="w-40 h-40 flex flex-col items-center justify-around border-4 border-emerald-900 bg-emerald-800 my-4 
-                             rounded-lg cursor-pointer"
+                  className="w-40 h-40 flex flex-col items-center justify-around border-4 border-emerald-900 bg-emerald-800 
+                  my-4 rounded-lg cursor-pointer"
                   onClick={() => {
                     changeFile(file);
+                    toggle();
                   }}
                 >
                   <div>
@@ -27,7 +33,7 @@ const ChangeFile = ({
                       viewBox="0 0 24 24"
                       strokeWidth={1.5}
                       stroke="currentColor"
-                      className="w-20 h-20"
+                      className="w-24 h-24"
                     >
                       <path
                         strokeLinecap="round"
