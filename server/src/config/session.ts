@@ -7,7 +7,6 @@ import bcrypt from "bcrypt";
 passport.use(
   new PassportLocal.Strategy(async (username, password, cb) => {
     try {
-      console.log(username, password);
       const doc = await UserModel.findOne({ username: username });
       if (!doc) {
         return cb(null, false);

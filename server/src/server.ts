@@ -17,7 +17,9 @@ const app: Express = express();
 // MIDDLEWARE
 app.use(
   cors({
-    origin: ["http://localhost:5173", process.env.FRONTEND || ""],
+    origin: [
+      process.env.DEV ? "http://localhost:5173" : process.env.FRONTEND || "",
+    ],
     credentials: true,
   })
 );
