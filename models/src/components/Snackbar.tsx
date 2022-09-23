@@ -21,7 +21,7 @@ const Snackbar = ({
   return (
     <>
       {show && (
-        <div className="fixed bottom-4 left-0 w-full flex justify-center">
+        <div className="fixed bottom-4 left-0 w-full flex justify-center z-50">
           <div className="border-4 border-red-700 rounded-lg text-white p-2 px-2 text-xl font-semibold bg-red-500/50">
             {error}
           </div>
