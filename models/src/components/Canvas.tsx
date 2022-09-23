@@ -2,10 +2,10 @@ import { useEffect, useRef, useState } from "react";
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls";
-import Controls from "./Controls";
 import { Object3D } from "three";
-
+import Controls from "./Controls";
 import File from "./File";
+
 const Canvas = ({
   setIsAuthenticated,
 }: {
@@ -16,8 +16,10 @@ const Canvas = ({
   const [camera, setCamera] = useState<THREE.PerspectiveCamera | null>(null);
   const [renderer, setRenderer] = useState<THREE.WebGLRenderer | null>(null);
   const [loader, setLoader] = useState<GLTFLoader | null>(null);
-  const [URL, setURL] = useState("");
   const [files, setFiles] = useState([]);
+  const [file, setFile] = useState("");
+  const [showMenu, setShowMenu] = useState<"File" | "Control" | "None">("None");
+  const [progress, setProgress] = useState(0.0);
 
   const getFiles = async () => {
     try {
@@ -46,18 +48,21 @@ const Canvas = ({
         }
       }
 
-      const res = await fetch(import.meta.env.VITE_API_URL + "/file/" + URL, {
+      const res = await fetch(import.meta.env.VITE_API_URL + "/file/" + file, {
         credentials: "include",
       });
-      const url = (await res.json()).url;
+      const URL = (await res.json()).url;
+      setProgress(0);
 
       loader.load(
-        url,
+        URL,
         (gltf) => {
           gltf.scene.scale.set(10, 10, 10);
           scene.add(gltf.scene);
         },
-        (progress) => console.log((progress.loaded / progress.total) * 100),
+        (progressEvent) => {
+          setProgress((progressEvent.loaded / progressEvent.total) * 100);
+        },
         (err) => console.error(err)
       );
     }
@@ -158,20 +163,41 @@ const Canvas = ({
 
   useEffect(() => {
     load();
-  }, [URL]);
+  }, [file]);
 
   return (
     <>
+      <div
+        className={`fixed top-0 left-0 w-screen flex justify-center ${
+          showMenu !== "None" ? "invisible md:visible" : ""
+        }`}
+      >
+        {file !== "" && (
+          <div className="flex border-indigo-900 border-b-4 border-l-4 border-r-4 bg-indigo-500/75 text-white text-2xl p-2 rounded-br-lg rounded-bl-lg">
+            <div className="mx-4">{file}</div>
+            {progress < 100 && (
+              <div className="mx-4">{progress.toFixed(1)} %</div>
+            )}
+          </div>
+        )}
+      </div>
       {scene && (
-        <Controls scene={scene} setIsAuthenticated={setIsAuthenticated} />
+        <Controls
+          scene={scene}
+          setIsAuthenticated={setIsAuthenticated}
+          setShowMenu={setShowMenu}
+          showMenu={showMenu}
+        />
       )}
       <File
         files={files}
-        changeFile={(file) => {
-          console.log(file);
-          setURL(file);
+        changeFile={(fileName) => {
+          console.log(fileName);
+          setFile(fileName);
         }}
         getFiles={getFiles}
+        setShowMenu={setShowMenu}
+        showMenu={showMenu}
       />
       <canvas ref={canvas} className="fixed top-0 left-0 -z-50"></canvas>
     </>
