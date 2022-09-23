@@ -41,7 +41,7 @@ const Upload = ({ getFiles }: { getFiles: () => void }) => {
           bg-emerald-500/50 hover:bg-emerald-500/75 transition duration-300 border border-emerald-400 rounded-md"
         type="file"
         name="file"
-        accept=".glb,.glft"
+        accept=".glb"
         onChange={(event) => {
           const uploadFile: File | undefined = event.target.files
             ? event.target.files[0]
