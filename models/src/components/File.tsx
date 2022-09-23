@@ -18,7 +18,6 @@ const File = ({
   const [visible, setVisible] = useState<"visible" | "invisible">("invisible");
 
   const toggle = () => {
-    console.log(visible);
     if (visible === "invisible") {
       setVisible("visible");
       setShowMenu("File");
@@ -35,7 +34,9 @@ const File = ({
           visible !== "visible" ? "visible" : "invisible"
         } fixed top-0 right-0 bg-emerald-500/75 hover:bg-emerald-500 hover:cursor-pointer border-emerald-900 text-white
          px-4 py-2 flex items-center border-l-4 border-b-4 rounded-bl-lg font-semibold  ${
-           showMenu === "Control" ? "invisible md:visible" : ""
+           showMenu === "Control" && visible !== "visible"
+             ? "invisible md:visible"
+             : ""
          }`}
         onClick={toggle}
       >
@@ -64,7 +65,7 @@ const File = ({
         } fixed top-0 right-0 w-screen h-screen md:w-5/6 lg:w-[30%] bg-emerald-500/50`}
       >
         <ChangeFile files={files} changeFile={changeFile} toggle={toggle} />
-        <div className="h-1/6 flex flex-col justify-center items-center">
+        <div className="h-1/6 flex flex-col justify-start items-center pt-4">
           <Upload getFiles={getFiles} />
         </div>
 

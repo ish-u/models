@@ -108,7 +108,7 @@ const Canvas = ({
     });
     newRenderer.setSize(window.innerWidth, window.innerHeight);
     newRenderer.setPixelRatio(window.devicePixelRatio);
-    newRenderer.setClearColor(0x0f0f0f, 1);
+    newRenderer.setClearColor(0x0f0f0f);
 
     // GLTF LOADER
     const gltfLoader = new GLTFLoader();
@@ -118,19 +118,19 @@ const Canvas = ({
     newScene.add(newCamera);
 
     // Adding Lighting
-    const light = new THREE.PointLight(0xffffff, 10);
-    light.position.set(10, 10, 10);
+    const light = new THREE.PointLight(0xffffff, 5);
+    light.position.set(5, 5, 5);
     newScene.add(light);
 
-    const ambLight = new THREE.AmbientLight(0x404040); // soft white light
-    newScene.add(light);
+    const ambLight = new THREE.AmbientLight(0x404040, 10); // soft white light
+    newScene.add(ambLight);
 
     // Adding orbit controls
     const orbit = new OrbitControls(newCamera, newRenderer.domElement);
 
     // helpers
     // GRID
-    const grid = new THREE.GridHelper(1000, 1000);
+    const grid = new THREE.GridHelper(1000, 1000, 0x000000);
     newScene.add(grid);
     // AXES
     const axesHelper = new THREE.AxesHelper(1000);
@@ -181,9 +181,10 @@ const Canvas = ({
           </div>
         )}
       </div>
-      {scene && (
+      {scene && renderer && (
         <Controls
           scene={scene}
+          renderer={renderer}
           setIsAuthenticated={setIsAuthenticated}
           setShowMenu={setShowMenu}
           showMenu={showMenu}
