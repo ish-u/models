@@ -35,6 +35,8 @@ cd models
 
   - Generate `SESSION SECRET` using by running `require('crypto').randomBytes(64).toString('hex')` in node console
 
+  - Setup S3 Storage in AWS Console - [S3 Documentation](https://docs.aws.amazon.com/s3/index.html)
+
   - The Final `.env` will look like this
 
     ```
