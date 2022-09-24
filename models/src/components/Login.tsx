@@ -63,7 +63,7 @@ const Login = ({
             className="w-3/6 p-1 border-emerald-900/50 border-2 bg-emerald-900  rounded-md"
             disabled={username === "" || password === ""}
           >
-            Register
+            Login
           </button>
         ) : (
           <Loader />
