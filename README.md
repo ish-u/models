@@ -11,7 +11,7 @@
 
 ## Setup Local Development
 
-Clone the Repository and cd to to `greeenkdeck-assignment`
+Clone the Repository and cd to to `models`
 
 ```bash
 git clone https://github.com/ish-u/models.git
