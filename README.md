@@ -73,7 +73,7 @@ cd models
 
 - The Client will be Live at [`http://localhost:5713`](http://localhost:5713)
 
-## [API DOCS](/docs/API/API_DOCS.md)
+## [API DOCS](/docs/API_DOCS.md)
 
 ## References
 
