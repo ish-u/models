@@ -6,7 +6,7 @@ import { Request } from "express";
 const upload = multer({
   storage: multerS3({
     s3: S3,
-    bucket: "fabrik.models",
+    bucket: process.env.BUCKET || "",
     metadata: function (req, file, cb) {
       cb(null, { fieldName: file.fieldname });
     },
